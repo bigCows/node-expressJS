@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+
+    <form>
+      <div>用户名<input type="text" name="username" id="username"></div>
+      <div>密码<input type="password" name="password" id="password"></div>
+      <div>age<input type="text" name="age" id="age"></div>
+      <div><input type="button" id="btn" value="注册"></div>
+      <div><input type="button" id="updateBtn" value="更新"></div>
+      <div><input type="button" id="delBtn" value="删除"></div>
+      <div><input type="button" id="findBtn" value="查询数据"></div>
+
+    </form>
+
+    <table border="1px">
+      <thead>
+          <td>id</td>
+          <td>用户名</td>
+          <td>年龄</td>
+          <td>操作</td>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+    <script>
+
+      let username = document.querySelector('#username')
+      let psw = document.querySelector('#password')
+      let age = document.querySelector('#age')
+      let btn = document.querySelector('#btn')
+      let updateBtn = document.querySelector('#updateBtn')
+      let delBtn = document.querySelector('#delBtn')
+      let findBtn = document.querySelector('#findBtn')
+      btn.addEventListener('click',async () => {
+        const json = await fetch('/users/login',{
+          method: 'post',
+          body:JSON.stringify({
+            username: username.value,
+            password: psw.value,
+            age: age.value
+          }),
+          headers:{'Content-Type':'application/json'}
+        })
+        const data = await json.json()
+        console.log(data);
+      })
+
+      updateBtn.addEventListener('click',async () => {
+        const json = await fetch('/users/update/6434c026eda804066930ac2c',{
+          method: 'post',
+          body:JSON.stringify({
+            username: username.value,
+            password: psw.value,
+            age: age.value
+          }),
+          headers:{'Content-Type':'application/json'}
+        })
+        const data = await json.json()
+        console.log(data);
+      })
+
+      delBtn.addEventListener('click',async () => {
+        const json = await fetch('/users/login',{
+          method: 'post',
+          body:JSON.stringify({
+            username: username.value,
+            password: psw.value,
+            age: age.value
+          }),
+          headers:{'Content-Type':'application/json'}
+        })
+        const data = await json.json()
+        console.log(data);
+      })
+
+      // findBtn.addEventListener('click',async () => {
+      //   const json = await fetch('/users/list?pagenum=1&pagesize=2')
+      //   const data = await json.json()
+      //   const tbody = document.querySelector('tbody')
+      //   tbody.innerHTML = data.map((item,index) => 
+      //     `
+      //     <tr>
+      //       <td row_id="${index}">${item._id}</td>  
+      //       <td>${item.username}</td>  
+      //       <td>${item.age}</td>  
+      //       <td><button class="delRow">删除</button><button class="updateRow">更新</button></td>  
+      //     </tr>
+      //     `
+      //   ).join('')
+      // })
+
+        async function getlist() {
+          const json = await fetch('/users/list?pagenum=2&pagesize=4')
+          const data = await json.json()
+          const tbody = document.querySelector('tbody')
+          tbody.innerHTML = data.map((item,index) => 
+            `
+            <tr>
+              <td row_id="${index}">${item._id}</td>  
+              <td>${item.username}</td>  
+              <td>${item.age}</td>  
+              <td><button class="delRow">删除</button><button class="updateRow">更新</button></td>  
+            </tr>
+            `
+          ).join('')
+          let delRow = document.querySelector('.delRow')
+          let updateRow = document.querySelector('.updateRow')
+          delRow.addEventListener('click', async (e) => {
+            const tr = e.target.parentNode.parentNode
+            const trArr = tr.getElementsByTagName('td')
+            const id = trArr[0].innerText
+            const json = await fetch(`/users/delete?id=${id}`)
+            const data = await json.json()
+            if(data.tips === '删除成功') tbody.removeChild(tr)
+            })
+        }
+        getlist()
+
+    </script>
+  </body>
+</html>
