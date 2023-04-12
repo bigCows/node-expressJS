@@ -12,6 +12,9 @@ const userService = {
   },
   deleteUser: (id) => {
     return userModel.deleteOne({_id:id})
+  },
+  loginUser: (username,password) => {
+    return userModel.find({username,password})
   }
 }
 

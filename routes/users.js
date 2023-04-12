@@ -17,4 +17,6 @@ router.get('/users',userController.userList)
 
 router.delete('/users',userController.deleteUser)
 
+router.post('/login',userController.loginUser)
+
 module.exports = router;

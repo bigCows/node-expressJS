@@ -1,5 +1,6 @@
 
 const userService = require('../services/user-service')
+const commonMethod = require('../common/return-data')
 
 const userController = {
   addUser: async (req,res,next) => {
@@ -36,6 +37,17 @@ const userController = {
       res.send({tips:'删除成功'})
     } catch (error) {
       next(error)
+    }
+  },
+  loginUser: async(req,res,next) => {
+    const { username, password } = req.body
+    const data = await userService.loginUser(username,password)
+    if(data.length) {
+      // 登录成功，设置session
+      req.session.user = ['mxf_session'];
+      res.send(commonMethod.returnData(0,'登录成功',[]))
+    } else {
+      res.send({code: -1,message:'登录失败，请检查用户名或密码是否正确',data:[]})
     }
   }
 }

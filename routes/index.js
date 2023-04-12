@@ -7,6 +7,5 @@ router.get('/', function(req, res, next) {
 });
 
 
-[{name:'zs',age:20},{name:'ls',age:21},{name:'ww',age:22}]
 
 module.exports = router;
