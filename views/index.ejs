@@ -15,8 +15,7 @@
       <div><input type="button" id="btn" value="注册"></div>
       <div><input type="button" id="updateBtn" value="更新"></div>
       <div><input type="button" id="delBtn" value="删除"></div>
-      <div><input type="button" id="findBtn" value="查询数据"></div>
-
+      <div><input type="button" id="findBtn" value="查询"></div>
     </form>
 
     <table border="1px">
@@ -40,7 +39,7 @@
       let delBtn = document.querySelector('#delBtn')
       let findBtn = document.querySelector('#findBtn')
       btn.addEventListener('click',async () => {
-        const json = await fetch('/users/login',{
+        const json = await fetch('/api/users',{
           method: 'post',
           body:JSON.stringify({
             username: username.value,
@@ -54,8 +53,8 @@
       })
 
       updateBtn.addEventListener('click',async () => {
-        const json = await fetch('/users/update/6434c026eda804066930ac2c',{
-          method: 'post',
+        const json = await fetch('/api/users/643517ff452b0000480003fa',{
+          method: 'put',
           body:JSON.stringify({
             username: username.value,
             password: psw.value,
@@ -68,14 +67,8 @@
       })
 
       delBtn.addEventListener('click',async () => {
-        const json = await fetch('/users/login',{
-          method: 'post',
-          body:JSON.stringify({
-            username: username.value,
-            password: psw.value,
-            age: age.value
-          }),
-          headers:{'Content-Type':'application/json'}
+        const json = await fetch('/api/users?id=643517ff452b0000480003fa',{
+          method: 'delete',
         })
         const data = await json.json()
         console.log(data);
@@ -98,7 +91,7 @@
       // })
 
         async function getlist() {
-          const json = await fetch('/users/list?pagenum=2&pagesize=4')
+          const json = await fetch('/api/users?pagenum=1&pagesize=10')
           const data = await json.json()
           const tbody = document.querySelector('tbody')
           tbody.innerHTML = data.map((item,index) => 
@@ -107,20 +100,25 @@
               <td row_id="${index}">${item._id}</td>  
               <td>${item.username}</td>  
               <td>${item.age}</td>  
-              <td><button class="delRow">删除</button><button class="updateRow">更新</button></td>  
+              <td><button class="delRow">删除</button></td>  
             </tr>
             `
           ).join('')
-          let delRow = document.querySelector('.delRow')
+          let delRow = document.querySelectorAll('.delRow')
           let updateRow = document.querySelector('.updateRow')
-          delRow.addEventListener('click', async (e) => {
+          delRow.forEach(item => {
+            item.addEventListener('click', async (e) => {
+            console.log('in');
             const tr = e.target.parentNode.parentNode
+            console.log(tr);
             const trArr = tr.getElementsByTagName('td')
             const id = trArr[0].innerText
-            const json = await fetch(`/users/delete?id=${id}`)
+            console.log(id);
+            const json = await fetch(`/api/users?id=${id}`,{method:'delete'})
             const data = await json.json()
             if(data.tips === '删除成功') tbody.removeChild(tr)
             })
+          })
         }
         getlist()
 
