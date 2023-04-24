@@ -3,6 +3,28 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script>
+       axios.interceptors.request.use(function (config) {
+        const token = localStorage.getItem('token')
+        console.log(token);
+          config.headers.authorization = `Bearer ${localStorage.getItem('token')}`
+          return config;
+        }, function (error) {
+          return Promise.reject(error);
+        });
+      
+      axios.interceptors.response.use(function (response) {
+          localStorage.setItem('token',response.headers.authorization)
+          return response;
+        }, function (error) {
+          // console.log(error);
+          if(error.response.status === 401) {
+            location.href = '/login'
+          };
+          return Promise.reject(error);
+        });
+    </script>
   </head>
   <body>
    <h1>首页</h1>
@@ -13,7 +35,9 @@
       <div>age<input type="text" name="age" id="age"></div>
       <div><input type="button" id="btn" value="注册"></div>
       <div><input type="button" id="updateBtn" value="更新"></div>
-      <div><input type="button" id="delBtn" value="删除"></div>
+      <div>
+        <input type="button" id="delBtn" value="删除">
+      </div>
       <div><input type="button" id="findBtn" value="查询"></div>
     </form>
 
@@ -28,7 +52,9 @@
       </tbody>
     </table>
 
+    
     <script>
+     
 
       let username = document.querySelector('#username')
       let psw = document.querySelector('#password')
@@ -38,40 +64,52 @@
       let delBtn = document.querySelector('#delBtn')
       let findBtn = document.querySelector('#findBtn')
       btn.addEventListener('click',async () => {
-        const json = await fetch('/api/users',{
-          method: 'post',
-          body:JSON.stringify({
-            username: username.value,
-            password: psw.value,
-            age: age.value
-          }),
-          headers:{'Content-Type':'application/json'}
+        const data = await axios.post('/api/users',{
+          username: username.value,
+          password: psw.value,
+          age: age.value
         })
-        const data = await json.json()
-        if(data.code === -1) {
-          location.href = '/login'
-        }
+        // const json = await fetch('/api/users',{
+        //   method: 'post',
+        //   body:JSON.stringify({
+        //     username: username.value,
+        //     password: psw.value,
+        //     age: age.value
+        //   }),
+        //   headers:{'Content-Type':'application/json'}
+        // })
+        // const data = await json.json()
+        console.log(data);
+        // if(data.code === -1) {
+        //   location.href = '/login'
+        // }
       })
 
       updateBtn.addEventListener('click',async () => {
-        const json = await fetch('/api/users/643517ff452b0000480003fa',{
-          method: 'put',
-          body:JSON.stringify({
-            username: username.value,
-            password: psw.value,
-            age: age.value
-          }),
-          headers:{'Content-Type':'application/json'}
+        const data = await axios.put('/api/users/643517ff452b0000480003fa',{
+          username: username.value,
+          password: psw.value,
+          age: age.value
         })
-        const data = await json.json()
+        // const json = await fetch('/api/users/643517ff452b0000480003fa',{
+        //   method: 'put',
+        //   body:JSON.stringify({
+        //     username: username.value,
+        //     password: psw.value,
+        //     age: age.value
+        //   }),
+        //   headers:{'Content-Type':'application/json'}
+        // })
+        // const data = await json.json()
         console.log(data);
       })
 
       delBtn.addEventListener('click',async () => {
-        const json = await fetch('/api/users?id=643517ff452b0000480003fa',{
-          method: 'delete',
-        })
-        const data = await json.json()
+        const data = await axios.delete('/api/users?id=643517ff452b0000480003fa')
+        // const json = await fetch('/api/users?id=643517ff452b0000480003fa',{
+        //   method: 'delete',
+        // })
+        // const data = await json.json()
         console.log(data);
       })
 
@@ -92,10 +130,12 @@
       // })
 
         async function getlist() {
-          const json = await fetch('/api/users?pagenum=1&pagesize=10')
-          const data = await json.json()
+          const data = await axios.get('/api/users?pagenum=1&pagesize=10')
+          console.log(data);
+          // const json = await fetch('/api/users?pagenum=1&pagesize=10')
+          // const data = await json.json()
           const tbody = document.querySelector('tbody')
-          tbody.innerHTML = data.map((item,index) => 
+          tbody.innerHTML = data.data.map((item,index) => 
             `
             <tr>
               <td row_id="${index}">${item._id}</td>  
@@ -115,8 +155,9 @@
             const trArr = tr.getElementsByTagName('td')
             const id = trArr[0].innerText
             console.log(id);
-            const json = await fetch(`/api/users?id=${id}`,{method:'delete'})
-            const data = await json.json()
+            const {data} = await axios.delete(`/api/users?id=${id}`)
+            // const json = await fetch(`/api/users?id=${id}`,{method:'delete'})
+            // const data = await json.json()
             if(data.tips === '删除成功') tbody.removeChild(tr)
             })
           })

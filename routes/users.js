@@ -5,7 +5,6 @@ const userController = require('../controllers/user-controller')
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  console.log(req.cookies,'xxx');
   res.send('respond with a resource');
 });
 

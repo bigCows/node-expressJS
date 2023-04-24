@@ -21,9 +21,11 @@
 - 2.7、db.users.insert({name:22,age:33},{name:22,age:33},{name:22,age:33}) 向users表中插入单条或多条数据
 - 2.8、db.users.deleteOne({age:22}) 删除表中符合该条件的数据，如果匹配到了多个age为22的，只删除第一个
 - 2.9、db.users.deleteMany({name:22},{name:23})
-- 2.10、db.users.updateOne({myname:22},{$set:{age: 19}}) 将name表中myname为22的数据，age修改为19，如果匹配到了多个age为22的，只修改第一个
+- 2.10、db.users.updateOne({myname:22},{$set:{age: 19}}) 将users表中myname为22的数据，age修改为19，如果匹配到了多个age为22的，只修改第一个
   - $set:设置该字段
   - $inc:给目标字段的值做加法操作
+  - db.users.updateMany({},{$unset:{age:1}}) 将users表中所有age字段删除
+  - db.users.updateOne({},{$rename:{"age":"ages"}}) 将age字段修改为ages
 
 - 2.11、db.users.find({age:{$gt:20}}) 在users中查找age字段大于20的数据
 - 2.12、db.users.find({age:{$gte:20}}) 在users中查找age字段大于等于20的数据

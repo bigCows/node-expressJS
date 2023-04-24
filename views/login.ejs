@@ -13,22 +13,44 @@
   <div>密码<input type="password" name="password" id="password"></div>
   <div><input type="button" id="login" value="登录"></div>
 
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script>
+       axios.interceptors.request.use(function (config) {
+          return config;
+        }, function (error) {
+          return Promise.reject(error);
+        });
+      
+      axios.interceptors.response.use(function (response) {
+        const { authorization } = response.headers
+        authorization && localStorage.setItem('token',authorization)
+          return response;
+        }, function (error) {
+          return Promise.reject(error);
+        });
+    </script>
   <script>
+    
     let username = document.querySelector('#username')
     let psw = document.querySelector('#password')
     let login = document.querySelector('#login')
-
     login.addEventListener('click',async () => {
-        const json = await fetch('/api/login',{
-          method: 'post',
-          body:JSON.stringify({
-            username: username.value,
-            password: psw.value,
-          }),
-          headers:{'Content-Type':'application/json'}
+      const {data,headers} = await axios.post('/api/login',{
+          username: username.value,
+          password: psw.value,
         })
-        const data = await json.json()
+      localStorage.setItem('token',headers.authorization)
+        // const json = await fetch('/api/login',{
+        //   method: 'post',
+        //   body:JSON.stringify({
+        //     username: username.value,
+        //     password: psw.value,
+        //   }),
+        //   headers:{'Content-Type':'application/json'}
+        // })
+        // const data = await json.json()
         if(data.code === 0) {
+          console.log(data);
           location.href = '/'
         } else {
           alert(data.message)
