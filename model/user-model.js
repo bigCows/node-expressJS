@@ -4,7 +4,8 @@ const Schema =  mongoose.Schema
 const userType = {
   username: String,
   password: String,
-  age: Number
+  age: Number,
+  avatar: String,
 }
 
 // 配置versionKey参数：在使用cretea方法向数据库添加新数据时不会生成_v字段

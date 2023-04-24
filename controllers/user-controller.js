@@ -18,7 +18,9 @@ const userController = {
   addUser: async (req,res,next) => {
     try {
       const {username,password,age} = req.body
-      await userService.addUser(username,password,age)
+      console.log(req.file,'req.file');
+      const avatar = req.file ? `uploads/${req.file.filename}` : 'images/boy-icon.png'
+      await userService.addUser(username,password,age,avatar)
       res.send({ok:1})
     } catch (error) {
       next(error)

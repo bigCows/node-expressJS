@@ -24,18 +24,18 @@
 - 2.10、db.users.updateOne({myname:22},{$set:{age: 19}}) 将users表中myname为22的数据，age修改为19，如果匹配到了多个age为22的，只修改第一个
   - $set:设置该字段
   - $inc:给目标字段的值做加法操作
-  - db.users.updateMany({},{$unset:{age:1}}) 将users表中所有age字段删除
-  - db.users.updateOne({},{$rename:{"age":"ages"}}) 将age字段修改为ages
+- 2.11 db.users.updateMany({},{$unset:{age:1}}) 将users表中所有age字段删除
+- 2.12 db.users.updateOne({},{$rename:{"age":"ages"}}) 将age字段修改为ages
 
-- 2.11、db.users.find({age:{$gt:20}}) 在users中查找age字段大于20的数据
-- 2.12、db.users.find({age:{$gte:20}}) 在users中查找age字段大于等于20的数据
-- 2.13、db.users.find({age:{$lt:20}}) 在users中查找age字段小于20的数据
-- 2.14、db.users.find({age:{$lte:20}}) 在users中查找age字段小于等于20的数据
-- 2.15、db.users.find({},{age: 1}) 返回users表中所有age字段的数据
-- 2.16、db.users.find({},{age: 0}) 返回users表中所有的数据，去除每条数据中的age
-- 2.17、db.users.find().sort({age:1}) 返回users表中age字段按照从小到大排列，-1为从大到小
-- 2.18、db.users.find().limit(4) 返回users表中的前4条数据 
-- 2.19、db.users.find().skip(4) 返回users表中的最后4条数据
+- 2.13、db.users.find({age:{$gt:20}}) 在users中查找age字段大于20的数据
+- 2.14、db.users.find({age:{$gte:20}}) 在users中查找age字段大于等于20的数据
+- 2.15、db.users.find({age:{$lt:20}}) 在users中查找age字段小于20的数据
+- 2.16、db.users.find({age:{$lte:20}}) 在users中查找age字段小于等于20的数据
+- 2.17、db.users.find({},{age: 1}) 返回users表中所有age字段的数据
+- 2.18、db.users.find({},{age: 0}) 返回users表中所有的数据，去除每条数据中的age
+- 2.19、db.users.find().sort({age:1}) 返回users表中age字段按照从小到大排列，-1为从大到小
+- 2.20、db.users.find().limit(4) 返回users表中的前4条数据 
+- 2.21、db.users.find().skip(4) 返回users表中的最后4条数据
 
 ## 分页相关
 - 计算公式： (pagenum - 1) * pageSize
@@ -45,3 +45,5 @@
 - db.users.find({$or:[{age:22},{age:33}]}) 返回所有数据中age要么是22，要么是33的数据
 - db.users.find({age:1}).count()  返回符合查询条件的数据总数
 
+## expressJS处理文件对象
+- https://github.com/expressjs/multer
