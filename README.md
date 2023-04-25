@@ -47,3 +47,6 @@
 
 ## expressJS处理文件对象
 - https://github.com/expressjs/multer
+
+## apidoc生成的接口文档打开页面一直显示loading
+- 解决方式： 安装0.17.6版本即可

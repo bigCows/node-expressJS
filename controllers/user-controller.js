@@ -15,6 +15,39 @@ const userController = {
       next(error)
     }
   },
+
+  /**
+   * 
+   * @api {post} /api/users 登录
+   * @apiName  login
+   * @apiGroup usersGroup
+   * @apiVersion  1.0.0
+   * 
+   * 
+   * @apiParam  {String} username 用户名
+   * @apiParam  {String} password 密码
+   * @apiParam  {String} age 年龄
+   * 
+   * @apiSuccess (200) {Object} data 请求成功返回的数据
+   * 
+   * @apiParamExample  {type} Request-Example:
+   * {
+   *     username: 'mxf'
+   *     password: '123456'
+   *     age : '20'
+   * }
+   * 
+   * 
+   * @apiSuccessExample {Object} Success-Response:
+   * {
+   *    data: null, 
+   *    errcode: 0,
+   *    errmsg: '登录成功'
+   * }
+   * 
+   * 
+   */
+
   addUser: async (req,res,next) => {
     try {
       const {username,password,age} = req.body
@@ -26,6 +59,37 @@ const userController = {
       next(error)
     }
   },
+
+  /**
+   * 
+   * @api {put} /users/:id 更新用户信息
+   * @apiName 更新用户信息put
+   * @apiGroup usersGroup
+   * @apiVersion  1.0.0
+   * 
+   * 
+   * @apiParam  {String} id 用户id
+   * 
+   * @apiSuccess (200) {Object} data 更新成功返回的数据
+   * 
+   * @apiParamExample  {String} Request-Example:
+   * {
+   *     http://localhost:3000/users?id='xxxx'
+   * }    
+   * 
+   * 
+   * 
+   * @apiSuccessExample {Object} Success-Response:
+   * {
+   *     data: null,
+   *     errcode: 0,
+   *     errmsg: '更新成功'  
+   * }
+   * 
+   * 
+   */
+
+
   updateUser: async (req,res,next) => {
     try {
       const {username,password,age} = req.body

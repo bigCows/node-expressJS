@@ -1,0 +1,7 @@
+{
+  "name": "api-doc测试文档",
+  "title": "api-doc测试文档Title",
+  "description": "api-doc测试文档Description",
+  "url": "http://localhost:3000",
+  "version": "1.0.0"
+}
